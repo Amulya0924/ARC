@@ -32,8 +32,15 @@ document.addEventListener('DOMContentLoaded', () => {
         body: formData
       });
 
+      if (response.status === 413) {
+        const errorData = await response.json().catch(() => ({}));
+        errorBanner.textContent = errorData.message || 'File size exceeds maximum allowed limit of 8 MiB.';
+        errorBanner.style.display = 'block';
+        return;
+      }
+
       if (response.status >= 500) {
-        // Application treat 5xx as severe failure and redirects
+        // Application treats 5xx as severe failure and redirects
         window.location.href = '/?uploadFailed=1';
         return;
       }

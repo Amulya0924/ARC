@@ -21,13 +21,12 @@ test.describe('Photo Upload Workflow E2E', () => {
     await expect(page.locator('#photoImg')).toHaveAttribute('src', /\/api\/photos\/[a-f0-9]{64}\/content/);
   });
 
-  test('should redirect to /?uploadFailed=1 on uploading oversized photo (> 8 MiB) due to seeded defect', async ({ page }) => {
+  test('should display error banner on uploading oversized photo (> 8 MiB)', async ({ page }) => {
     await page.goto('/');
     await page.setInputFiles('#photoInput', largePath);
     await page.click('#uploadBtn');
 
-    // Wait for redirect to /?uploadFailed=1
-    await page.waitForURL(/\/\?uploadFailed=1/);
     await expect(page.locator('#errorBanner')).toBeVisible();
+    await expect(page.locator('#errorBanner')).toContainText('File size exceeds maximum allowed limit of 8 MiB');
   });
 });

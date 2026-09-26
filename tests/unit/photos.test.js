@@ -72,14 +72,13 @@ describe('Photos API Endpoints', () => {
     expect(res.body).toHaveProperty('error', 'NOT_FOUND');
   });
 
-  it('should return seeded 500 INTERNAL_ERROR when uploading photo > 8 MiB (seeded defect)', async () => {
+  it('should return 413 PHOTO_TOO_LARGE when uploading photo > 8 MiB', async () => {
     const res = await request(app)
       .post('/api/photos')
       .attach('photo', largePath);
 
-    // Seeded defect: Multer limit triggers error, error handler converts to 500
-    expect(res.status).toBe(500);
-    expect(res.body).toHaveProperty('error', 'INTERNAL_ERROR');
-    expect(res.body).toHaveProperty('message', 'An internal error occurred processing your request');
+    expect(res.status).toBe(413);
+    expect(res.body).toHaveProperty('error', 'PHOTO_TOO_LARGE');
+    expect(res.body).toHaveProperty('message', 'File size exceeds maximum allowed limit of 8 MiB');
   });
 });
