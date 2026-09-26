@@ -1,0 +1,9 @@
+node_modules
+.data
+.git
+.gitignore
+README.md
+Dockerfile
+test-results
+playwright-report
+coverage
