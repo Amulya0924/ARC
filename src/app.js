@@ -3,6 +3,7 @@ const path = require('path');
 const pino = require('pino');
 const pinoHttp = require('pino-http');
 const multer = require('multer');
+const crypto = require('crypto');
 const healthRouter = require('./routes/health');
 const photosRouter = require('./routes/photos');
 
@@ -29,9 +30,12 @@ app.use((err, req, res, next) => {
 
   if (err instanceof multer.MulterError || (err.name === 'MulterError')) {
     if (err.code === 'LIMIT_FILE_SIZE') {
+      const requestId = req.id || req.headers['x-request-id'] || crypto.randomUUID();
       return res.status(413).json({
         error: 'PHOTO_TOO_LARGE',
-        message: 'File size exceeds maximum allowed limit of 8 MiB'
+        message: 'Photo must be 8 MiB or smaller.',
+        maxBytes: 8388608,
+        requestId
       });
     }
   }

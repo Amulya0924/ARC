@@ -27,6 +27,6 @@ test.describe('Photo Upload Workflow E2E', () => {
     await page.click('#uploadBtn');
 
     await expect(page.locator('#errorBanner')).toBeVisible();
-    await expect(page.locator('#errorBanner')).toContainText('File size exceeds maximum allowed limit of 8 MiB');
+    await expect(page.locator('#errorBanner')).toContainText('Photo must be 8 MiB or smaller.');
   });
 });

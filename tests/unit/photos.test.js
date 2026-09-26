@@ -72,13 +72,38 @@ describe('Photos API Endpoints', () => {
     expect(res.body).toHaveProperty('error', 'NOT_FOUND');
   });
 
-  it('should return 413 PHOTO_TOO_LARGE when uploading photo > 8 MiB', async () => {
+  it('should return 201 Created when uploading a photo of exact 8 MiB boundary (8,388,608 bytes)', async () => {
+    const exactBuffer = Buffer.alloc(8 * 1024 * 1024, 0x61);
+    const res = await request(app)
+      .post('/api/photos')
+      .attach('photo', exactBuffer, { filename: 'exact-limit.png', contentType: 'image/png' });
+
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty('size', 8388608);
+  });
+
+  it('should return 413 PHOTO_TOO_LARGE when uploading a photo one byte over 8 MiB (8,388,609 bytes)', async () => {
+    const overBuffer = Buffer.alloc(8 * 1024 * 1024 + 1, 0x61);
+    const res = await request(app)
+      .post('/api/photos')
+      .attach('photo', overBuffer, { filename: 'one-byte-over.png', contentType: 'image/png' });
+
+    expect(res.status).toBe(413);
+    expect(res.body).toHaveProperty('error', 'PHOTO_TOO_LARGE');
+    expect(res.body).toHaveProperty('message', 'Photo must be 8 MiB or smaller.');
+    expect(res.body).toHaveProperty('maxBytes', 8388608);
+    expect(res.body).toHaveProperty('requestId');
+  });
+
+  it('should return 413 PHOTO_TOO_LARGE when uploading large-noisy.png fixture (> 8 MiB)', async () => {
     const res = await request(app)
       .post('/api/photos')
       .attach('photo', largePath);
 
     expect(res.status).toBe(413);
     expect(res.body).toHaveProperty('error', 'PHOTO_TOO_LARGE');
-    expect(res.body).toHaveProperty('message', 'File size exceeds maximum allowed limit of 8 MiB');
+    expect(res.body).toHaveProperty('message', 'Photo must be 8 MiB or smaller.');
+    expect(res.body).toHaveProperty('maxBytes', 8388608);
+    expect(res.body).toHaveProperty('requestId');
   });
 });

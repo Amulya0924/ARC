@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.status === 413) {
         const errorData = await response.json().catch(() => ({}));
-        errorBanner.textContent = errorData.message || 'File size exceeds maximum allowed limit of 8 MiB.';
+        errorBanner.textContent = `Upload Failed: ${errorData.message || 'Photo must be 8 MiB or smaller.'}`;
         errorBanner.style.display = 'block';
         return;
       }
