@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC Photo Demo</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ARC Photo Demo v2.3.1</h1>
+      <p class="subtitle">Upload and view original byte-for-byte photos</p>
+    </header>
+
+    <div id="errorBanner" class="alert alert-danger" style="display: none;">
+      <strong>Upload Failed:</strong> An error occurred while uploading your photo. File size limit is 8 MiB.
+    </div>
+
+    <div id="successBanner" class="alert alert-success" style="display: none;">
+      <strong>Upload Successful!</strong> Your photo was saved byte-for-byte.
+    </div>
+
+    <main>
+      <section class="upload-card">
+        <h2>Upload New Photo</h2>
+        <form id="uploadForm">
+          <div class="form-group">
+            <label for="photoInput">Select Photo (Max 8 MiB):</label>
+            <input type="file" id="photoInput" name="photo" accept="image/*" required>
+          </div>
+          <button type="submit" id="uploadBtn">Upload Photo</button>
+        </form>
+      </section>
+
+      <section id="resultCard" class="result-card" style="display: none;">
+        <h2>Photo Metadata</h2>
+        <div id="photoDetails"></div>
+        <div class="image-preview">
+          <h3>Photo Content:</h3>
+          <img id="photoImg" src="" alt="Uploaded photo content">
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

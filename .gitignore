@@ -1,0 +1,14 @@
+node_modules/
+.data/
+fixtures/
+artifacts/
+dist/
+coverage/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+*.log
+.DS_Store
+.env
+*.pem

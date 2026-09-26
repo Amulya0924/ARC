@@ -1,0 +1,29 @@
+{
+  "name": "arc-debug-photo-demo",
+  "version": "2.3.1",
+  "description": "Photo upload demonstration app with deterministic fixtures and seeded error handling defect",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "fixtures": "node scripts/generate-fixtures.js",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "express": "^5.0.1",
+    "multer": "^2.0.2",
+    "pino": "^9.6.0",
+    "pino-http": "^10.4.0",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "supertest": "^7.0.0",
+    "vitest": "^3.0.7"
+  }
+}
